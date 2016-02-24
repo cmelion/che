@@ -221,6 +221,7 @@
 
 /*Icons colors*/
 @eval blueIconColor org.eclipse.che.ide.api.theme.Style.getBlueIconColor();
+@eval redIconColor org.eclipse.che.ide.api.theme.Style.theme.getRedIconColor();
 
 /*Placeholder*/
 @eval placeholderColor org.eclipse.che.ide.api.theme.Style.theme.placeholderColor();

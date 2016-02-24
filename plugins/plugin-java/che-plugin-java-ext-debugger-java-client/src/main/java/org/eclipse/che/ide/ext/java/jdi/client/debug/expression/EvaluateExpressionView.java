@@ -57,7 +57,7 @@ public interface EvaluateExpressionView extends View<EvaluateExpressionView.Acti
     void setResult(@NotNull String value);
 
     /**
-     * Change the enable state of the evaluate button.
+     * Change the enable state of the evaluateExpression button.
      *
      * @param enabled
      *         <code>true</code> to enable the button, <code>false</code> to disable it

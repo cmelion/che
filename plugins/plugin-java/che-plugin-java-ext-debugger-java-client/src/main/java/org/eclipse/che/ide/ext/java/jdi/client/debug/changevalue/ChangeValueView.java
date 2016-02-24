@@ -46,7 +46,7 @@ public interface ChangeValueView extends View<ChangeValueView.ActionDelegate> {
     void setValue(@NotNull String value);
 
     /**
-     * Change the enable state of the evaluate button.
+     * Change the enable state of the evaluateExpression button.
      *
      * @param isEnable
      *         <code>true</code> to enable the button, <code>false</code> to disable it
