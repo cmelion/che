@@ -10,8 +10,6 @@
  *******************************************************************************/
 package org.eclipse.che.ide.ext.github.server;
 
-import com.google.inject.Inject;
-
 import org.eclipse.che.api.core.ApiException;
 import org.eclipse.che.dto.server.DtoFactory;
 import org.eclipse.che.ide.ext.github.shared.Collaborators;
@@ -38,9 +36,6 @@ import java.util.List;
  * @author Igor Vinokur
  */
 public class GitHubDTOFactory {
-
-    @Inject
-    GitHubFactory gitHub;
 
     /**
      * Create DTO object of GitHub repositories collection from given repositories list
@@ -124,12 +119,6 @@ public class GitHubDTOFactory {
         if (ghRepository.isFork() && ghRepository.getParent() != null) {
             dtoRepository.setParent(createRepository(ghRepository.getParent()));
         }
-        //if a repository is received from list, parent in repo is null, so we have to get repo separately to get his parent
-        if (ghRepository.isFork() && ghRepository.getParent() == null) {
-            dtoRepository.setParent(createRepository(gitHub.connect().getUser(ghRepository.getOwner().getLogin())
-                                                           .getRepository(ghRepository.getName()).getParent()));
-        }
-
 
         return dtoRepository;
     }
