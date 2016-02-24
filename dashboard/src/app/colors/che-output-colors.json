@@ -1,0 +1,26 @@
+[
+  {
+    "type": "DOCKER",
+    "color": "blue"
+  },
+  {
+    "type": "INFO",
+    "color": "green"
+  },
+  {
+    "type": "ERROR",
+    "color": "red"
+  },
+  {
+    "type": "WARNING",
+    "color": "yellow"
+  },
+  {
+    "type": "STDOUT",
+    "color": "black"
+  },
+  {
+    "type": "STDERR",
+    "color": "brown"
+  }
+]
