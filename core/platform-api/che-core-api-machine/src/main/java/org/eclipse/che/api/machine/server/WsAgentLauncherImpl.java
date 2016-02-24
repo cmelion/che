@@ -72,7 +72,7 @@ public class WsAgentLauncherImpl implements WsAgentLauncher {
         this.wsAgentPingConnectionTimeoutMs = wsAgentPingConnectionTimeoutMs;
         this.pingTimedOutErrorMessage = pingTimedOutErrorMessage;
         // everest respond 404 to path to rest without trailing slash
-        this.wsAgentPingPath = apiEndpoint.getPath().endsWith("/") ? apiEndpoint.getPath() : apiEndpoint.getPath() + "/";
+        this.wsAgentPingPath = UriBuilder.fromUri(apiEndpoint).path("/ext/").build().getPath();
     }
 
     public static String getWsAgentProcessOutputChannel(String workspaceId) {
@@ -117,7 +117,7 @@ public class WsAgentLauncherImpl implements WsAgentLauncher {
                                                 .build()
                                                 .toString();
         return httpJsonRequestFactory.fromUrl(wsAgentPingUrl)
-                                     .setMethod(HttpMethod.OPTIONS)
+                                     .setMethod(HttpMethod.GET)
                                      .setTimeout(wsAgentPingConnectionTimeoutMs);
     }
 
