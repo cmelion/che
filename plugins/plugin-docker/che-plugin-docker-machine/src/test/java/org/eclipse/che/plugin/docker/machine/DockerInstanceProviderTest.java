@@ -52,6 +52,8 @@ import java.util.Set;
 import static java.util.Arrays.asList;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.anyVararg;
 import static org.mockito.Matchers.eq;
@@ -150,6 +152,8 @@ public class DockerInstanceProviderTest {
                                            any(ProgressMonitor.class),
                                            any(AuthConfigs.class),
                                            anyBoolean(),
+                                           anyLong(),
+                                           anyLong(),
                                            anyVararg());
     }
 

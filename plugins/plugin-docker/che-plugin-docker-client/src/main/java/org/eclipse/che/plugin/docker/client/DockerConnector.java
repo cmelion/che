@@ -198,6 +198,32 @@ public class DockerConnector {
     }
 
     /**
+     * The same as {@link #buildImage(String, ProgressMonitor, AuthConfigs, boolean, File...)}
+     * but contains additional parameters:
+     *
+     * @param memoryLimit
+     *         Memory limit for build
+     * @param memorySwapLimit
+     *         Total memory (memory + swap), -1 to enable unlimited swap
+     * @see #buildImage(String, ProgressMonitor, AuthConfigs, boolean, File...)
+     */
+    public String buildImage(String repository,
+                             ProgressMonitor progressMonitor,
+                             AuthConfigs authConfigs,
+                             boolean doForcePull,
+                             long memoryLimit,
+                             long memorySwapLimit,
+                             File... files) throws IOException, InterruptedException {
+        final File tar = Files.createTempFile(null, ".tar").toFile();
+        try {
+            createTarArchive(tar, files);
+            return doBuildImage(repository, tar, progressMonitor, dockerDaemonUri, authConfigs, doForcePull, memoryLimit, memorySwapLimit);
+        } finally {
+            FileCleaner.addFile(tar);
+        }
+    }
+
+    /**
      * Builds new docker image from specified tar archive that must contain Dockerfile.
      *
      * @param repository
@@ -776,6 +802,27 @@ public class DockerConnector {
                                   URI dockerDaemonUri,
                                   AuthConfigs authConfigs,
                                   boolean doForcePull) throws IOException, InterruptedException {
+        return doBuildImage(repository, tar, progressMonitor, dockerDaemonUri, authConfigs, doForcePull, 0, 0);
+    }
+
+
+    /**
+     * The same as {@link #doBuildImage(String, File, ProgressMonitor, URI, AuthConfigs, boolean)} but contains additional parameters:
+     *
+     * @param memoryLimit
+     *         Memory limit for build
+     * @param memorySwapLimit
+     *         Total memory (memory + swap), -1 to enable unlimited swap
+     * @see #doBuildImage(String, File, ProgressMonitor, URI, AuthConfigs, boolean)
+     */
+    protected String doBuildImage(String repository,
+                                  File tar,
+                                  final ProgressMonitor progressMonitor,
+                                  URI dockerDaemonUri,
+                                  AuthConfigs authConfigs,
+                                  boolean doForcePull,
+                                  long memoryLimit,
+                                  long memorySwapLimit) throws IOException, InterruptedException {
         if (authConfigs == null) {
             authConfigs = initialAuthConfig.getAuthConfigs();
         }
@@ -794,6 +841,12 @@ public class DockerConnector {
                                                             .entity(tarInput)) {
             if (repository != null) {
                 connection.query("t", repository);
+            }
+            if (memoryLimit > 0 ) {
+                connection.query("memory", memoryLimit);
+            }
+            if (memorySwapLimit > 0) {
+                connection.query("memswap", memorySwapLimit);
             }
             final DockerResponse response = connection.request();
             final int status = response.getStatus();
